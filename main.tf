@@ -1,6 +1,14 @@
+variable "aws_access_key" {
+  type = "string"
+}
+
+variable "aws_access_secret" {
+  type = "string"
+}
+
 provider "aws" {
-  access_key = "xxx"
-  secret_key = "xxx"
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_access_secret}"
   region     = "sa-east-1"
 }
 
@@ -20,7 +28,7 @@ resource "aws_subnet" "main" {
   cidr_block = "10.0.1.0/24"
 
   tags {
-    Name = "Main"
+    Name = "Proxy Subnet"
   }
 
   depends_on = [
