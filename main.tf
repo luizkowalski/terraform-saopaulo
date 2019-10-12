@@ -9,7 +9,7 @@ variable "aws_access_secret" {
 
 variable "key_pair" {
   type = "string"
-  default = "spkeypar"
+  default = "tf"
 }
 
 provider "aws" {
@@ -24,7 +24,7 @@ resource "aws_vpc" "main" {
 
 resource "aws_internet_gateway" "igw" {
     vpc_id = "${aws_vpc.main.id}"
-    tags {
+    tags = {
         Name = "igw"
     }
 }
@@ -49,7 +49,7 @@ resource "aws_subnet" "main" {
   cidr_block = "10.0.1.0/24"
   map_public_ip_on_launch = true
 
-  tags {
+  tags = {
     Name = "Proxy Subnet"
   }
 
