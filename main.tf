@@ -6,10 +6,10 @@ variable "aws_access_secret" {
   type = "string"
 }
 
-
 variable "key_pair" {
   type = "string"
   default = "tf"
+  description = "The name of the key pair file (.pem)"
 }
 
 provider "aws" {
@@ -47,7 +47,7 @@ resource "aws_route_table_association" "public" {
 resource "aws_subnet" "main" {
   vpc_id     = "${aws_vpc.main.id}"
   cidr_block = "10.0.1.0/24"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = {
     Name = "Proxy Subnet"
@@ -100,6 +100,6 @@ resource "aws_eip_association" "eip_assoc" {
   allocation_id = "${aws_eip.pib.id}"
 }
 
-output "ip" {
-  value = "${aws_eip.pib.public_ip}"
+output "command" {
+  value = "sshuttle --dns -r ec2-user@${aws_eip.pib.public_ip} 0/0 -e \"ssh -A -i ${var.key_pair}.pem\""
 }
